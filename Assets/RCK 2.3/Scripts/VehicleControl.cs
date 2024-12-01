@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class VehicleControl : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class VehicleControl : MonoBehaviour
     public float maxSteerAngle = 30.0f;
     private float steer = 0;
     private float accel = 0.0f;
+    private float brakeSpeed = 0.5f;
     public bool brake;
     public bool isLifted = false;
+    public int brakeTime = 0;
 
     private Rigidbody rb;
 
@@ -30,15 +33,24 @@ public class VehicleControl : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log(brakeTime);
         if (!brake)
         {
             Vector3 force = transform.forward * accel * speed;
             rb.AddForce(force, ForceMode.Acceleration);
+            brakeTime = 0;
         }
 
         if (brake)
         {
             rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.fixedDeltaTime * 5.0f);
+            brakeTime++;
+        }
+
+        if(brakeTime >90)
+        {
+            Vector3 force = -transform.forward * brakeSpeed * speed;
+            rb.AddForce(force, ForceMode.Acceleration);
         }
 
         float steerAngle = steer * maxSteerAngle;
