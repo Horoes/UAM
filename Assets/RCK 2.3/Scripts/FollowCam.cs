@@ -7,7 +7,7 @@ public class SmoothCameraSwitch : MonoBehaviour
     public float transitionSpeed = 3.0f; // 전환 속도
     public float insideFOV = 46f;  // Inside 상태에서의 FOV
     public float outsideFOV = 60f; // Outside 상태에서의 FOV
-
+    public GameObject player;
     private Camera cam; // 카메라 컴포넌트
     private Transform camTransform;
     private Transform currentTarget; // 현재 타겟
@@ -17,6 +17,7 @@ public class SmoothCameraSwitch : MonoBehaviour
 
     void Start()
     {
+        player.GetComponent<VehicleControl>().movement = true;
         camTransform = GetComponent<Transform>();
         cam = GetComponent<Camera>();
 
